@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Activities() {
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    fetch('https://glorious-computing-machine-9xp64pw69g72p75r-8000.app.github.dev/api/activities/')
+      .then(response => response.json())
+      .then(data => setActivities(data))
+      .catch(error => console.error('Error fetching activities:', error));
+  }, []);
+
   return (
-    <div className="card">
-      <div className="card-body">
-        <h5 className="card-title">Activities</h5>
-        <p className="card-text">This is the Activities component.</p>
-        <button className="btn btn-primary">View Activities</button>
-      </div>
+    <div>
+      <h1>Activities</h1>
+      <ul>
+        {activities.map(activity => (
+          <li key={activity._id}>{activity.activity_type} - {activity.duration}</li>
+        ))}
+      </ul>
     </div>
   );
 }
